@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/v8.1.0-package/ol.css"
+    type="text/css">
+  <link rel="stylesheet"
+    href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/v6.15.1/examples/resources/layout.css"
+    type="text/css">
+  <link rel="stylesheet"
+    href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/ol-layerswitcher/dist/ol-layerswitcher.css" />
+  <script src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/v8.1.0-package/dist/ol.js"></script>
+  <script
+    src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/ol-layerswitcher/dist/ol-layerswitcher.js"></script>
+  <!--link rel="stylesheet" href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/bootstrap.min.css"-->
+  <!--link rel="stylesheet" href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/bootstrap.min.css"-->
+  <!--script type="text/javascript" src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/bootstrap.min.js"></script-->
+  <link rel="stylesheet"
+    href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/jquery-ui-1.13.2/jquery-ui.css">
+  <script
+    src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/jquery-ui-1.13.2/external/jquery/jquery.js"></script>
+  <script src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/libs/jquery-ui-1.13.2/jquery-ui.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href='https://cdn.jsdelivr.net/gh/startinhit/font-awesome/css/all.css' rel='stylesheet' />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Thêm style web-->
+  <link rel="stylesheet" href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/Style/Styleweb.css"
+    type="text/css">
+  <!-- Chỉnh sửa tên trang web-->
+  <title>Cảng Hải Phòng</title>
+  <link rel="shortcut icon" type="image/png"
+    href="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/logo/CMB Logo .png" />
+</head>
+
+<body>
+  <div id="title">
+    <header>
+      <!-- Thêm logo vào header -->
+      <img src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/logo/CMB Logo .png" alt="Logo" class="logo">
+      <nav>
+
+        <h1>QUẢN LÝ QUY HOẠCH CẢNG BIỂN HẢI PHÒNG</h1>
+        <!-- Thêm menu hoặc nút điều hướng ở đây nếu cần -->
+        <nav>
+          <ul>
+            <li><a href="https://cmbvn.com.vn/" target="_blank">TRANG CHỦ</a></li>
+            <li><a href="https://cmbvn.com.vn/gioi-thieu" target="_blank">GIỚI THIỆU</a></li>
+            <li><a href="https://cmbvn.com.vn/du-an-tieu-bieu" target="_blank">DỰ ÁN</a></li>
+            <li><a href="https://cmbvn.com.vn/lien-he" target="_blank">LIÊN HỆ</a></li>
+          </ul>
+        </nav>
+      </nav>
+    </header>
+  </div>
+  <div id="map">
+    <form id="measure">
+      <!--label style="display:none">Đo kích thước &nbsp;</label-->
+      <select id="measuretype">
+        <option value="select">Lựa chọn kiểu đo</option>
+        <option value="length">Đo chiều dài</option>
+        <option value="area">Đo diện tích</option>
+        <!-- <option value="clear">Xóa các kích thước</option>-->
+      </select>
+    </form>
+    <button id="btn_do_chieu_dai"><i class="fa-solid fa-ruler"></i></button>
+    <div class="hover-content" id="dynamic-content"></div>
+    <button id="btn_do_dt"><i class="fa-brands fa-squarespace"></i></button>
+
+
+    <form id="getinfo" style="display:none">
+      <label>Lấy thông tin đối tượng&nbsp;</label>
+      <select id="getinfotype">
+        <option value="select">Tùy chọn</option>
+        <option value="deactivate_getinfo">Tắt tính năng lấy thông tin đối tượng</option>
+        <option value="activate_getinfo">Bật tính năng lấy thông tin đối tượng</option>
+      </select>
+    </form>
+    <form id="Hienthipopup">
+      <input type="checkbox" id="toggleSwitch">
+      <label for="toggleSwitch">Hiện Popup</label>
+    </form>
+
+    <!--button onclick="wms_layers()" id="wms_layers_btn">Available WMS Layers</button-->
+
+  </div>
+
+  <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+  </div>
+  <div id="info">&nbsp;</div>
+
+
+  <div id="legend"></div>
+
+  <div id="query_tab">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#form">Tìm kiếm theo thuộc tính</a></li>
+      <li><a data-toggle="tab" href="#form1">Chọn trên màn hình</a></li>
+
+    </ul>
+
+
+    <div class="tab-content">
+      <div id="form" class="tab-pane fade in active">
+        <label for="layer">Chọn lớp dữ liệu</label>
+        <select class="form-control" id="layer" name="layer">
+          <option value="">--Chọn lớp dữ liệu--</option>
+        </select>
+        <br>
+        <label for="attributes">Chọn trường dữ liệu</label>
+        <select class="form-control" id="attributes" name="attributes">
+          <option value="">--Chọn trường dữ liệu--</option>
+        </select>
+        <br>
+        <label for="operator">Phương pháp tìm kiếm</label>
+        <select class="form-control" id="operator" name="operator">
+          <option value="">--Phương pháp tìm kiếm--</option>
+        </select>
+        <br>
+
+        <label for="value">Nhập giá trị</label>
+        <input type="text" class="form-control" id="value" name="value">
+        <br>
+        <button class="btn btn-success" onclick="query()"><i class="fas fa-search"></i>Tìm kiếm </button>
+        <button class="btn btn-secondary" onclick="clear_all()"><i class="fas fa-trash"></i> Bỏ chọn </button>
+      </div>
+      <div id="form1" class="tab-pane fade">
+        <label for="layer1">Chọn lớp dữ liệu</label>
+        <select class="form-control" id="layer1" name="layer1">
+          <option value="">--Chọn lớp dữ liệu--</option>
+        </select>
+        <br>
+
+        <label for="draw_type">Kiểu chọn đối tượng &nbsp;</label>
+        <select class="form-control" id="draw_type" name="draw_type">
+          <option value="select">--Kiểu chọn đối tượng--</option>
+          <option value="Square">Hình vuông</option>
+          <option value="Box">Hình hộp</option>
+          <!--option value="Polygon">Vùng polyline</option-->
+          <option value="Star">Hình ngôi sao</option>
+          <!--option value="clear">Xóa chọn</option-->
+        </select>
+        <br>
+        <button class="btn btn-secondary" onclick="clear_all()"><i class="fas fa-trash"></i> Bỏ chọn </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="table_data"> </div>
+  <div id="wms_layers_window" title="Available WMS Layers" style="display:none"></div>
+  <table id="table_wms_layers" class="table-bordered"></table>
+
+  <!--javascript-->
+  <script src="http://54.254.143.207:8080/2023.10.03_Webgis_WMS-main/Script/Script.js"></script>
+
+</body>
+
+</html>
